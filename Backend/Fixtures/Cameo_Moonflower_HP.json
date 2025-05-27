@@ -1,0 +1,13 @@
+{
+    "Name": "Cameo_Moonflower_HP",
+    "Brand": "Cameo",
+    "Model": "Moonflower HP",
+    "Mode": "5ch",
+    "Channels": {
+        "ColorWheel": 1,
+        "Rotation": 2,
+        "Strobe": 3,
+        "Dimmer": 4,
+        "Macro": 5
+    }
+}
