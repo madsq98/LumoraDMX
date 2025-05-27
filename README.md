@@ -8,6 +8,9 @@ It features:
 - Web API interface for external control
 - Support for Enttec and FTDI-based USB-DMX interfaces
 
+The project is tested and works with the Eurolite USB-DMX512 PRO Cable interface.
+Should work by default with all Enttec USB-DMX512 PRO based interfaces.
+
 ---
 
 ## 🚀 Features
