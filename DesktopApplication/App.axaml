@@ -1,0 +1,39 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:viewmodels="clr-namespace:DesktopApplication.ViewModels"
+			 xmlns:views="clr-namespace:DesktopApplication.Views"
+             x:Class="DesktopApplication.App"
+             xmlns:local="using:DesktopApplication"
+             RequestedThemeVariant="Dark">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+		<DataTemplate DataType="{x:Type viewmodels:SetupViewModel}">
+			<views:SetupView />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:SimpleDmxViewModel}">
+			<views:SimpleDmxView />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:EditViewModel}">
+			<views:EditView />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:PresetsViewModel}">
+			<views:PresetsView />
+		</DataTemplate>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+
+	<Application.Resources>
+		<ResourceDictionary>
+			<!-- Theme Colors -->
+			<SolidColorBrush x:Key="SetupColor">#2196F3</SolidColorBrush>
+			<SolidColorBrush x:Key="SimpleDmxColor">#FFC107</SolidColorBrush>
+			<SolidColorBrush x:Key="EditColor">#4CAF50</SolidColorBrush>
+			<SolidColorBrush x:Key="PresetsColor">#9C27B0</SolidColorBrush>
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>
