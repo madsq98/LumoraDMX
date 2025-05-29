@@ -11,7 +11,6 @@ LumoraDMX is a modern, cross-platform DMX lighting control application built usi
 - 🛋️ Project management and persistence  
 - 🧼 Backend auto-hosted alongside frontend in single `.exe`  
 - ✉️ mDNS service announcement for network discovery  
-- 🎧 Future-ready: line-in BPM detection and beat-reactive lighting planned!
 
 ## Technologies
 
