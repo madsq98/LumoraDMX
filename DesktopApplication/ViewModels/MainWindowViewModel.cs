@@ -17,6 +17,8 @@ namespace DesktopApplication.ViewModels
 
         [ObservableProperty]
         public IBrush currentTabColor = Brushes.White;
+        [ObservableProperty]
+        private bool _isProjectLoaded = false;
 
         public IRelayCommand ShowSetupCommand { get; }
         public IRelayCommand ShowSimpleDmxCommand { get; }
@@ -70,6 +72,11 @@ namespace DesktopApplication.ViewModels
             // Set initial view and color
             CurrentView = _setupVM;
             CurrentTabColor = GetBrush("SetupColor");
+
+            _projectService.ProjectLoaded += () =>
+            {
+                IsProjectLoaded = _projectService.IsProjectLoaded();
+            };
         }
 
         private IBrush GetBrush(string resourceKey)

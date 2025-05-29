@@ -3,8 +3,8 @@
         xmlns:vm="using:DesktopApplication.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:i="https://github.com/projektanker/icons.avalonia"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:i="https://github.com/projektanker/icons.avalonia"
+        mc:Ignorable="d"
         x:Class="DesktopApplication.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
@@ -19,32 +19,31 @@
 			<Setter Property="Margin" Value="10" />
 			<Setter Property="BorderThickness" Value="2" />
 		</Style>
-		
+
 		<Style Selector="Button.setupButton">
-			<Setter Property="BorderBrush" Value="{StaticResource SetupColor}"/>
+			<Setter Property="BorderBrush" Value="{StaticResource SetupColor}" />
 		</Style>
 
 		<Style Selector="Button.simpleDmxButton">
-			<Setter Property="BorderBrush" Value="{StaticResource SimpleDmxColor}"/>
+			<Setter Property="BorderBrush" Value="{StaticResource SimpleDmxColor}" />
 		</Style>
 
 		<Style Selector="Button.editButton">
-			<Setter Property="BorderBrush" Value="{StaticResource EditColor}"/>
+			<Setter Property="BorderBrush" Value="{StaticResource EditColor}" />
 		</Style>
 
 		<Style Selector="Button.presetsButton">
-			<Setter Property="BorderBrush" Value="{StaticResource PresetsColor}"/>
+			<Setter Property="BorderBrush" Value="{StaticResource PresetsColor}" />
 		</Style>
 	</Window.Styles>
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainWindowViewModel />
+	</Design.DataContext>
 
-	<DockPanel VerticalAlignment="Top">
-		<Border DockPanel.Dock="Top" BorderBrush="{Binding CurrentTabColor}" BorderThickness="0,0,0,5" Margin="0,0,0,10">
+	<Grid RowDefinitions="Auto,*">
+		<!-- Top Menu Bar -->
+		<Border Grid.Row="0" BorderBrush="{Binding CurrentTabColor}" BorderThickness="0,0,0,5">
 			<Grid Background="Gray">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
@@ -56,34 +55,39 @@
 				<Button Grid.Column="0" Classes="menuButton setupButton" Command="{Binding ShowSetupCommand}">
 					<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
 						<i:Icon Value="fa-solid fa-sliders" Width="20" Height="20" />
-						<TextBlock Text="SETUP" HorizontalAlignment="Center"/>
+						<TextBlock Text="SETUP" HorizontalAlignment="Center" />
 					</StackPanel>
 				</Button>
 
 				<Button Grid.Column="1" Classes="menuButton simpleDmxButton" Command="{Binding ShowSimpleDmxCommand}">
 					<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
 						<i:Icon Value="fa-regular fa-lightbulb" Width="20" Height="20" />
-						<TextBlock Text="SIMPLE DMX" HorizontalAlignment="Center"/>
+						<TextBlock Text="SIMPLE DMX" HorizontalAlignment="Center" />
 					</StackPanel>
 				</Button>
 
-				<Button Grid.Column="2" Classes="menuButton editButton" Command="{Binding ShowEditCommand}">
+				<Button Grid.Column="2" Classes="menuButton editButton" Command="{Binding ShowEditCommand}" IsEnabled="{Binding IsProjectLoaded}">
 					<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
 						<i:Icon Value="fa-solid fa-pen" Width="20" Height="20" />
-						<TextBlock Text="EDIT" HorizontalAlignment="Center"/>
+						<TextBlock Text="EDIT" HorizontalAlignment="Center" />
 					</StackPanel>
 				</Button>
 
-				<Button Grid.Column="3" Classes="menuButton presetsButton" Command="{Binding ShowPresetsCommand}">
+				<Button Grid.Column="3" Classes="menuButton presetsButton" Command="{Binding ShowPresetsCommand}" IsEnabled="{Binding IsProjectLoaded}">
 					<StackPanel Orientation="Vertical" HorizontalAlignment="Center">
 						<i:Icon Value="fa-solid fa-layer-group" Width="20" Height="20" />
-						<TextBlock Text="PRESETS" HorizontalAlignment="Center"/>
+						<TextBlock Text="PRESETS" HorizontalAlignment="Center" />
 					</StackPanel>
 				</Button>
-
 			</Grid>
 		</Border>
 
-		<ContentControl Content="{Binding CurrentView}" />
-	</DockPanel>
+		<!-- Main Content Area -->
+		<ContentControl Grid.Row="1"
+                        Content="{Binding CurrentView}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch" />
+	</Grid>
 </Window>

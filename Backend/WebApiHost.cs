@@ -14,16 +14,9 @@ namespace Backend
         {
             var builder = WebApplication.CreateBuilder(args ?? Array.Empty<string>());
 
-            /*
-            int port = builder.WebHost.GetSetting("urls")?.Split(':').Last() switch
-            {
-                var p when int.TryParse(p, out var result) => result,
-                _ => 5000
-            };
-            */
             builder.WebHost.ConfigureKestrel(serverOptions =>
             {
-                serverOptions.Listen(IPAddress.Any, 0); // 0 = dynamic port
+                serverOptions.Listen(IPAddress.Any, 0);
             });
 
             var dmxOutput = new EnttecD2xxDmxOutput();
