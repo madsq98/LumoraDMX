@@ -83,7 +83,7 @@ namespace DesktopApplication
                         mainWindow.Show();
 
                         var msgBox = MessageBoxManager.GetMessageBoxStandard("Backend", $"Access swagger at {backendAddress}/swagger");
-                        await msgBox.ShowAsync();
+                        //await msgBox.ShowAsync();
                     }
                     else
                     {
