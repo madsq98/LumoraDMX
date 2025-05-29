@@ -1,0 +1,16 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="DesktopApplication.Views.SplashWindow"
+        Width="810" Height="363"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        SystemDecorations="None"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen">
+
+	<Image Source="/Assets/splash.png"
+           Stretch="Uniform"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center" />
+</Window>
