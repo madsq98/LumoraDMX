@@ -1,7 +1,12 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FrontendServices.Services.Project;
+using FrontendServices.Services.ProjectDmx;
+using FrontendServices.Services.SimpleDmx;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DesktopApplication.ViewModels
 {
@@ -18,34 +23,52 @@ namespace DesktopApplication.ViewModels
         public IRelayCommand ShowEditCommand { get; }
         public IRelayCommand ShowPresetsCommand { get; }
 
-        public MainWindowViewModel()
+        private readonly ProjectService _projectService;
+        private readonly SimpleDmxService _simpleDmxService;
+        private readonly ProjectDmxService _projectDmxService;
+
+        private readonly object _setupVM;
+        private readonly object _simpleDmxVM;
+        private readonly object _editVM;
+        private readonly object _presetsVM;
+
+        public MainWindowViewModel(IServiceProvider serviceProvider)
         {
+            _projectService = serviceProvider.GetRequiredService<ProjectService>();
+            _simpleDmxService = serviceProvider.GetRequiredService<SimpleDmxService>();
+            _projectDmxService = serviceProvider.GetRequiredService<ProjectDmxService>();
+
+            _setupVM = new SetupViewModel(_projectService);
+            _simpleDmxVM = new SimpleDmxViewModel();
+            _editVM = new EditViewModel();
+            _presetsVM = new PresetsViewModel();
+
             ShowSetupCommand = new RelayCommand(() =>
             {
-                CurrentView = new SetupViewModel();
+                CurrentView = _setupVM;
                 CurrentTabColor = GetBrush("SetupColor");
             });
 
             ShowSimpleDmxCommand = new RelayCommand(() =>
             {
-                CurrentView = new SimpleDmxViewModel();
+                CurrentView = _simpleDmxVM;
                 CurrentTabColor = GetBrush("SimpleDmxColor");
             });
 
             ShowEditCommand = new RelayCommand(() =>
             {
-                CurrentView = new EditViewModel();
+                CurrentView = _editVM;
                 CurrentTabColor = GetBrush("EditColor");
             });
 
             ShowPresetsCommand = new RelayCommand(() =>
             {
-                CurrentView = new PresetsViewModel();
+                CurrentView = _presetsVM;
                 CurrentTabColor = GetBrush("PresetsColor");
             });
 
             // Set initial view and color
-            CurrentView = new SetupViewModel();
+            CurrentView = _setupVM;
             CurrentTabColor = GetBrush("SetupColor");
         }
 

@@ -1,18 +1,26 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using DesktopApplication.ViewModels;
 using DesktopApplication.Views;
+using FrontendServices;
+using FrontendServices.Services.Project;
+using FrontendServices.Services.ProjectDmx;
+using FrontendServices.Services.SimpleDmx;
+using Microsoft.Extensions.DependencyInjection;
+using MsBox.Avalonia;
 
 namespace DesktopApplication
 {
     public partial class App : Application
     {
+        public static IServiceProvider Services { get; private set; }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -22,32 +30,66 @@ namespace DesktopApplication
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
-                // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
+                var serviceCollection = new ServiceCollection();
+
+                serviceCollection.AddSingleton<ProjectService>();
+                serviceCollection.AddSingleton<SimpleDmxService>();
+                serviceCollection.AddSingleton<ProjectDmxService>();
+
+                Services = serviceCollection.BuildServiceProvider();
+
                 DisableAvaloniaDataAnnotationValidation();
+
                 var splash = new SplashWindow();
                 splash.Show();
 
-                // Defer main window creation
                 Dispatcher.UIThread.Post(async () =>
                 {
                     await Task.Delay(3000); // Simulate loading time
 
-                    var mainWindow = new MainWindow
-                    {
-                        DataContext = new MainWindowViewModel()
-                    };
+                    string? backendAddress = null;
 
-                    desktop.MainWindow = mainWindow; // MUST be set before closing splash
-                    mainWindow.Show();                // Show the main window
-                    splash.Close();                   // Then close splash
+                    try
+                    {
+                        var discovered = await NetworkAnnouncer.DiscoverAsync(NetworkAnnouncer.DISCOVER_TYPE);
+
+                        if (discovered != null && discovered.Count > 0)
+                        {
+                            var service = discovered.First();
+                            backendAddress = $"http://{service.IPAddress}:{service.Port}";
+                            Console.WriteLine($"Found backend at {backendAddress}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Backend service not found in Zeroconf response.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error discovering backend: {ex.Message}");
+                    }
+
+                    if (!string.IsNullOrEmpty(backendAddress))
+                    {
+                        Services.GetRequiredService<ProjectService>().SetBackend(backendAddress);
+
+                        var mainWindow = new MainWindow
+                        {
+                            DataContext = new MainWindowViewModel(Services)
+                        };
+
+                        desktop.MainWindow = mainWindow;
+                        mainWindow.Show();
+                    }
+                    else
+                    {
+                        var msgBox = MessageBoxManager.GetMessageBoxStandard("Error", "Could not locate Lumora DMX backend on the network.");
+
+                        await msgBox.ShowAsync();
+                    }
+
+                    splash.Close();
                 });
-                /*
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
-                */
             }
 
             base.OnFrameworkInitializationCompleted();

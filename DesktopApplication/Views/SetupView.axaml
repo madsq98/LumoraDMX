@@ -3,5 +3,5 @@
              xmlns:vm="using:DesktopApplication.ViewModels"
              x:Class="DesktopApplication.Views.SetupView"
              x:DataType="vm:SetupViewModel">
-	<TextBlock Text="Setup View" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" />
+	<TextBlock Text="{Binding TestValue}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" />
 </UserControl>

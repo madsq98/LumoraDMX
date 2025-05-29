@@ -1,9 +1,16 @@
+using FrontendServices;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MQDmxController;
 using MQDmxController.Providers.EnttecD2xxDmxOutput;
 
 var builder = WebApplication.CreateBuilder(args);
+
+int port = builder.WebHost.GetSetting("urls")?.Split(':').Last() switch
+{
+    var p when int.TryParse(p, out var result) => result,
+    _ => 5000
+};
 
 var dmxOutput = new EnttecD2xxDmxOutput();
 var dmxOptions = new EnttecD2xxDmxOutputOptions
@@ -44,5 +51,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+NetworkAnnouncer.Announce("LumoraDMX", NetworkAnnouncer.ANNOUNCE_TYPE, port);
 
 app.Run();
