@@ -80,6 +80,9 @@ namespace DesktopApplication
 
                         desktop.MainWindow = mainWindow;
                         mainWindow.Show();
+
+                        var msgBox = MessageBoxManager.GetMessageBoxStandard("Backend", $"Access swagger at {backendAddress}/swagger");
+                        await msgBox.ShowAsync();
                     }
                     else
                     {
