@@ -41,7 +41,7 @@ namespace DesktopApplication.ViewModels
             _projectDmxService = serviceProvider.GetRequiredService<ProjectDmxService>();
 
             _setupVM = new SetupViewModel(_projectService);
-            _simpleDmxVM = new SimpleDmxViewModel();
+            _simpleDmxVM = new SimpleDmxViewModel(_simpleDmxService);
             _editVM = new EditViewModel();
             _presetsVM = new PresetsViewModel();
 

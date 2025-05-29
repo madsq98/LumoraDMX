@@ -1,7 +1,33 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:DesktopApplication.ViewModels"
+			 xmlns:local="clr-namespace:DesktopApplication.Components"
+			 xmlns:controls="clr-namespace:Avalonia.Controls.Primitives;assembly=Avalonia.Controls"
              x:Class="DesktopApplication.Views.SimpleDmxView"
              x:DataType="vm:SimpleDmxViewModel">
-	<TextBlock Text="Simple DMX View" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" />
+	<TabControl ItemsSource="{Binding Pages}">
+		<TabControl.ItemTemplate>
+			<DataTemplate x:DataType="vm:PageViewModel">
+				<TextBlock Text="{Binding Header}" />
+			</DataTemplate>
+		</TabControl.ItemTemplate>
+
+		<TabControl.ContentTemplate>
+			<DataTemplate x:DataType="vm:PageViewModel">
+				<ItemsControl ItemsSource="{Binding Channels}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<controls:UniformGrid Columns="32" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<local:ChannelSlider />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</DataTemplate>
+		</TabControl.ContentTemplate>
+	</TabControl>
 </UserControl>

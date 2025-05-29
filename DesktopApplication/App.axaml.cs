@@ -72,6 +72,7 @@ namespace DesktopApplication
                     if (!string.IsNullOrEmpty(backendAddress))
                     {
                         Services.GetRequiredService<ProjectService>().SetBackend(backendAddress);
+                        Services.GetRequiredService<SimpleDmxService>().SetBackend(backendAddress);
 
                         var mainWindow = new MainWindow
                         {

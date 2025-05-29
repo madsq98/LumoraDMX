@@ -1,0 +1,26 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="DesktopApplication.Components.ChannelSlider"
+    xmlns:vm="using:DesktopApplication.ViewModels"
+    x:DataType="vm:ChannelSliderViewModel"
+    Width="50"
+    Height="200">
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <TextBlock Text="{Binding Channel, StringFormat='Ch. {0}'}" 
+                   HorizontalAlignment="Center"
+                   FontWeight="Bold" />
+
+        <Slider Orientation="Vertical"
+                Minimum="0"
+                Maximum="255"
+                TickFrequency="1"
+                IsSnapToTickEnabled="True"
+                Width="40"
+                Height="150"
+                Value="{Binding Value, Mode=TwoWay}" />
+
+        <TextBlock Text="{Binding Value}" HorizontalAlignment="Center" />
+    </StackPanel>
+</UserControl>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FrontendServices.Services
@@ -33,6 +34,14 @@ namespace FrontendServices.Services
             }
 
             return await _client.SendAsync(request);
+        }
+
+        protected HttpRequestMessage CreatePostRequest(string endpoint, object data)
+        {
+            var serialized = JsonSerializer.Serialize(data);
+            var requestContent = new StringContent(serialized, Encoding.UTF8, "application/json");
+
+            return new HttpRequestMessage(HttpMethod.Post, endpoint) { Content = requestContent };
         }
     }
 }
