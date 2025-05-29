@@ -96,6 +96,18 @@ namespace DesktopApplication
                 });
             }
 
+            AppDomain.CurrentDomain.ProcessExit += (_, __) =>
+            {
+                var simpleDmxService = Services.GetRequiredService<SimpleDmxService>();
+
+                for(int i = 1; i <= 255; i++)
+                {
+                    _ = simpleDmxService.SetDmxChannel(i, 0);
+                }
+                // Final cleanup
+                Console.WriteLine("ProcessExit called!");
+            };
+
             base.OnFrameworkInitializationCompleted();
         }
 

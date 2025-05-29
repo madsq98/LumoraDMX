@@ -19,8 +19,6 @@ namespace FrontendServices.Services.SimpleDmx
             var httpRequest = CreatePostRequest("SimpleDmx/setChannel", data);
             var response = await SendAsync(httpRequest);
 
-            Console.WriteLine($"Sent {channel}:{value} - result: {response.StatusCode}");
-
             return response.IsSuccessStatusCode;
         }
     }
